@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <title>
+        flare
+    </title>
+    <body>
+        <a href="file:///home/karim/Pictures/Lab/lab.html">
+            <img src="./imgs/img1.jpg" , style="width:1500px;height:800px;">
+
+        </a>
+        
+    </body>
+    
+</html>
