@@ -1,0 +1,83 @@
+﻿1- install postgres 
+2- create database iti_python, connect on it
+CREATE DATABASE iti_python;
+\c iti_python
+
+3- create table students with columns (stud_id primary key auto increment not null,
+first_name, last_name (text), phone number number, bdate date, phon_number varchar,)
+CREATE TABLE students(stud_id serial PRIMARY KEY,first_name text,last_name text, phone smallint,bdate date,phon_number varchar(20) );
+
+
+
+4- insert 10 records 3 has same first name, and rest with diff values
+
+INSERT INTO students (first_name,last_name,phone,bdate,email)  VALUES ('ismail','mohsen',528,DATE '2010-05-16','im@gmail'), ('mina','koko',500,DATE '1998-05-15','koko@gmail') , ('samy','farouk',579,DATE '1997-03-10','sf@gmail'), ('shoukry','ahmed',509,DATE '1996-03-10','sa@gmail'),('zaki','fahim',536,DATE '1997-08-11','zf@gmail');
+etc....
+
+5- select fname, lname order by email
+select  first_name,last_name from students order by email;
+
+6- rename table name to be iti
+ ALTER TABLE students RENAME TO iti;
+
+7- add column unique email
+ALTER TABLE iti ADD CONSTRAINT uniquectm_const UNIQUE (email);
+
+8- drop fname and lname and add full name column
+
+ALTER TABLE iti ADD COLUMN full_name TEXT;
+UPDATE  iti SET full_name = first_name;
+ALTER TABLE iti DROP COLUMN first_name , DROP COLUMN last_name;
+
+9- add constrain phone number is not null 
+ ALTER TABLE iti ALTER COLUMN phone SET NOT NULL;
+
+10- update first column  with your full name
+did that once in question 8
+
+11- add column salary 
+ ALTER TABLE iti ADD COLUMN salary  bigint;
+
+12 – update record salary with 1000, 2000, 3000, 4000, 4000, 5000, 6000, 7000, 7000, 8000)
+ UPDATE  iti SET salary = 1000 WHERE stud_id=1;
+and so on ...
+
+13 – get last 5 record
+SELECT * FROM iti ORDER BY full_name DESC LIMIT 5;
+
+14- get record desc 
+select full_name from iti order by salary DESC;
+
+15- get full-name, salary group by salary
+select salary  from iti group by salary;
+
+16- get all salary greater than 5000
+select full_name from iti where salary>5000;
+
+17- get all unique data from table
+select DISTINCT full_name from iti;
+
+18- create schema test_schema 
+CREATE SCHEMA test_schema;
+
+19- add iti_2 table under schema like iti 
+CREATE TABLE test_schema.iti_2;
+
+20- create temp table with one column first name
+create temp table it(first_name text);
+
+21- insert your name into this table
+INSERT INTO it (first_name)  VALUES ("mohy");
+
+22- close postgres
+ctr-D
+23- open postgres select from your temp table and write what you notice
+the temp table gone
+
+24- describe  table  
+the resst of tables
+25- list tables
+\d
+26- list database
+\dt
+
