@@ -1,0 +1,150 @@
+﻿1- create table company 
+ id | name  | age | address   | salary
+----+-------+-----+-----------+--------
+  1 | Paul  |  32 | California|  20000
+  2 | Allen |  25 | Texas     |  15000
+  3 | Teddy |  23 | Norway    |  20000
+  4 | Mark  |  25 | Rich-Mond |  65000
+  5 | David |  27 | Texas     |  85000
+  6 | Kim   |  22 | South-Hall|  45000
+  7 | James |  24 | Houston   |  10000
+
+CREATE TABLE company(id serial PRIMARY KEY,name text,age int,address text, salary int);
+ INSERT INTO company (name,age,address,salary)  VALUES ('paul',32,'california',20000);
+etc....
+
+
+
+  Using transaction 
+
+  A- delete row at age 25, roll back it
+BEGIN;
+BEGIN
+iti_python=*# DELETE FROM company WHERE age=25;
+DELETE 2
+iti_python=*# ROLLBACK;
+ROLLBACK
+
+   	
+  B- delete row at age 25 and commit it 
+
+iti_python=# BEGIN;
+BEGIN
+iti_python=*# DELETE FROM company WHERE age=25;
+DELETE 2
+iti_python=*# COMMIT;
+COMMIT
+	
+ 
+ 2- Create an ascending sequence called idno, starting at 50:
+CREATE SEQUENCE idno INCREMENT 5 START 50;
+	 
+	
+	
+	b - Select the next number from this sequence :
+
+SELECT NEXTVAL('idno');
+
+     	c- Let use this sequence in an INSERT command:
+ALTER TABLE company ADD COLUMN dep int ;
+INSERT INTO company (name,age,address,salary,dep) VALUES('joe',30,'newyourk',20000,nextval('idno'));
+
+
+	d – get all record from sequence table 
+ select * from company;
+
+
+3- run below command to create table department 
+
+CREATE TABLE DEPARTMENT(
+   ID INT PRIMARY KEY      NOT NULL,
+   DEPT           CHAR(50) NOT NULL,
+   EMP_ID         INT      NOT NULL
+);
+	INSERT INTO DEPARTMENT (ID, DEPT, EMP_ID)
+		VALUES (1, 'IT Billing', 1 );
+
+	INSERT INTO DEPARTMENT (ID, DEPT, EMP_ID)
+		VALUES (2, 'Engineering', 2 );
+
+	INSERT INTO DEPARTMENT (ID, DEPT, EMP_ID)
+		VALUES (3, 'Finance', 7 );
+ A- using cross join select EMP_ID, NAME, DEPT from company and department
+	
+
+ 
+	B – using inner join 
+	SELECT emp_id,name,dept from company inner join department on company.id=department.emp_id;
+
+  	c- left join 
+	SELECT emp_id,name,dept from company left join department on company.id=department.emp_id;
+
+
+  	d- right join
+SELECT emp_id,name,dept from company right join department on company.id=department.emp_id;
+ 
+	
+  	l - FULL OUTER JOIN
+SELECT emp_id,name,dept from company full outer join department on company.id=department.emp_id;
+
+
+ 
+	4 – create view (comapny_dept) using  using inner join  EMP_ID, NAME, DEPT
+	
+	
+	5- delete view company_dept
+
+
+	6- add index salary_index to salary column on table company, then describe table
+CREATE INDEX salary_index ON company(salary);
+      \d
+
+		
+	7- drop index and then describe the table
+DROP INDEX salary_index;
+
+
+
+	8 - join company, department tables using SELECT statement along with UNION clause
+
+SELECT emp_id,name,dept from company right join  department on company.id=department.emp_id UNION 
+SELECT emp_id,name,dept from company left join  department on company.id=department.emp_id;
+	
+		
+	9- copy company.csv file to company name 
+copy company2 from '/home/karim/Documents/lab1.csv' DELIMITER ',' CSV;
+
+	
+	10 – export department table to csv file
+copy company2 to '/home/karim/Documents/lab1.csv' DELIMITER ',' CSV;
+
+
+
+part 2
+11- create block with variable name created_at datatype time
+		
+
+
+
+
+12- declare variable company_count assign count row into this variable and print it msg NOTICE:  Number of co is
+		
+13 – raise exception email is unique 
+
+
+
+
+
+14- debugging your statement using assert get count of company and assert if greater than 30 raise exception msg
+
+15 – select data from company with id = 0 and add condition if not found raise message 
+
+16- as above example get data where id = 1 and print name in case found if not print not exist
+
+17- using simple case check if salary is 85000 print manager
+
+
+18- loop on company get 4 record and print name and salary order by salary, desc
+
+19- handling exception data not found selected id=2000
+
