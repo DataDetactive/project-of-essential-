@@ -1,0 +1,187 @@
+﻿Previous part
+
+1-create block with variable name created_at datatype time
+do $$
+iti_python$# <<first_block>>
+iti_python$# declare
+iti_python$# created_at date;
+iti_python$# begin
+iti_python$# end first_block $$;
+
+	
+
+2 – select data from company with id = 0 and add condition if not found raise message 
+do $$
+iti_python$# declare 
+iti_python$# details company%rowtype;
+iti_python$# input_id company.id%type :=0;
+iti_python$# begin
+iti_python$# select * from company into details where input_id = id;
+iti_python$# if not found then 
+iti_python$# raise notice 'can not find the details of %',input_id;
+iti_python$# end if;
+iti_python$# end $$;
+
+
+3- as above example get data where id = 1 and print name in case found if not print not exist
+ do $$
+declare 
+details company%rowtype;
+input_id company.id%type :=1;
+begin
+select * from company into details where input_id = id;
+if not found then 
+raise notice 'can not find the details of %',input_id; else raise notice'we find it: %',details;
+end if;
+end $$;
+
+
+
+4- using simple case check if salary is 85000 print manager
+
+do $$
+declare
+salary_input company.salary%type;
+position varchar(100):='manager';
+begin
+select salary into salary_input from company;
+if found then 
+case salary_input
+when 85000 then
+
+raise notice '%',position;
+else
+raise notice 'normal employee';
+end case;
+end if;
+end $$;
+
+
+
+5- loop on company get 4 record and print name and salary order by salary, desc
+do
+$$
+declare
+    f record;
+begin
+    for f in select name, salary 
+	       from company
+	       order by salary desc
+	       limit 5 
+    loop 
+	raise notice '% %', f.name, f.salary;
+    end loop;
+end;
+$$
+
+
+
+1- Create function totalRecords,
+ create function git_count()
+returns int
+language plpgsql
+as $$
+declare 
+record_count integer;
+begin
+select count(*) into record_count from company;                                 return record_count;
+end;                
+$$;
+CREATE FUNCTION
+iti_python=# select git_count();
+ git_count 
+
+
+
+2- Delete above function 
+drop function git_count();
+
+
+	
+
+3- create stored procedure increase_salary take customer_id and amount
+create or replace procedure increase_salary(id_input int,amount dec)
+language plpgsql
+as $$
+begin
+update company set salary=salary+amount where company.id = id;
+end;$$;
+
+	 
+4- drop stored procedure increase_salary;
+	
+DROP PROCEDURE increase_salary;
+
+5-create trigger to keep log for every record being inserted in 	COMPANY table, 
+
+CREATE TABLE AUDIT(
+   EMP_ID INT NOT NULL,
+   ENTRY_DATE TEXT NOT NULL
+);
+
+
+
+CREATE OR REPLACE FUNCTION logfunc() RETURNS TRIGGER
+LANGUAGE plpgsql
+ AS $$
+   BEGIN
+      INSERT INTO AUDIT(EMP_ID, ENTRY_DATE) VALUES (new.ID, current_timestamp);
+      RETURN NEW;
+   END;
+$$ ;
+
+ CREATE TRIGGER log_details AFTER INSERT ON COMPANY
+FOR EACH ROW EXECUTE PROCEDURE logfunc();
+
+
+6- alter trigger name to be log_new_insert
+
+ALTER TRIGGER log_details
+ON company 
+RENAME TO log_new_insert;
+	
+7- show relation between table company and any trigger (bonus)
+select * from information_schema.triggers
+	
+8- disable trigger(bonus)
+ALTER TABLE company
+DISABLE TRIGGER  log_details;
+	
+9- enable All trigger(bonus)
+ALTER TABLE company
+DISABLE TRIGGER  all
+	
+
+
+part2 Administration
+
+
+1- create role with login and try login it to postgres database
+CREATE ROLE khaled WITH LOGIN PASSWORD 'jw8s0F4'
+
+2- Create superuser roles
+CREATE ROLE mohsen LOGIN SUPERUSER PASSWORD '12354';
+
+3- Create roles that can create databases
+CREATE ROLE ali WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD '1234';
+
+4- create role select_user and give him select privilege
+
+CREATE ROLE select_user WITH LOGIN PASSWORD '5898';
+grant select on iti.company to select_user;
+
+
+5- create role manager_user give him all privilege except delete 
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO manager;
+revoke delete on ON ALL TABLES IN SCHEMA public TO manager;
+
+
+
+  
+	
+	
+
+
+
+
+
